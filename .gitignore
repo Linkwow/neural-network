@@ -1,3 +1,7 @@
 .idea/
 *.iml
 *.log
+*.zip
+mvnw*
+target/
+.mvn/
