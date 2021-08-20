@@ -1,4 +1,4 @@
-package com.libs.naumenko.neuralcore;
+package com.libs.neuralcore;
 
 
 import org.datavec.api.io.labels.ParentPathLabelGenerator;
@@ -60,29 +60,36 @@ public class MinistImagePipeline {
         int height = 28;
         int width = 28;
         int channels = 1;
-        int batchSize = 256;
+        int batchSize = 128;
         int outputNum = 10;
         int rngSeed = 123;
         int numEpochs = 1;
+
         Random randomGen = new Random(rngSeed);
 
         File trainData = new File("E:\\mnist_png\\training");
         File testData = new File("E:\\mnist_png\\testing");
-
         FileSplit train = new FileSplit(trainData, NativeImageLoader.ALLOWED_FORMATS, randomGen);
         FileSplit test = new FileSplit(testData, NativeImageLoader.ALLOWED_FORMATS, randomGen);
-
         ParentPathLabelGenerator labelMaker = new ParentPathLabelGenerator();
-
         ImageRecordReader recordReader = new ImageRecordReader(height, width, channels, labelMaker);
         recordReader.initialize(train);
-        // recordReader.setListeners(new LogRecordListener());
+       // recordReader.setListeners(new LogRecordListener());
 
         DataSetIterator dataIter = new RecordReaderDataSetIterator(recordReader, batchSize, 1, outputNum);
 
         DataNormalization scaler = new ImagePreProcessingScaler(0, 1);
         scaler.fit(dataIter);
         dataIter.setPreProcessor(scaler);
+
+        //todo create method for demonstration
+/*        for (int i = 1; i < 3; i++) {
+            DataSet ds = dataIter.next();
+            System.out.println(ds);
+            System.out.println(dataIter.getLabels());
+        }*/
+
+
 
         logger.info("Build Model");
 
@@ -109,8 +116,9 @@ public class MinistImagePipeline {
                 .build();
 
         MultiLayerNetwork model = new MultiLayerNetwork(conf);
-
         model.init();
+
+
         logger.info("Train model");
         model.pretrain(dataIter, numEpochs);
         model.fit(dataIter, numEpochs);
@@ -136,17 +144,12 @@ public class MinistImagePipeline {
         logger.info(eval.stats());
 
 
-        //todo create method for demonstration
-   /*     for (int i = 1; i < 3; i++) {
-            DataSet ds = dataIter.next();
-            System.out.println(ds);
-            System.out.println(dataIter.getLabels());
-        }*/
 
         logger.info("save model");
         File locationToSave = new File("trained_mnist_model.zip");
         boolean saveUpdaters = false;
         ModelSerializer.writeModel(model, locationToSave, saveUpdaters);
+        //load model
         model = ModelSerializer.restoreMultiLayerNetwork(locationToSave);
 
         //test model
@@ -162,9 +165,5 @@ public class MinistImagePipeline {
         INDArray output = model.output(image);
         logger.info(output.toString());
         logger.info(labelList.toString());
-        double a = 123.13698;
-        double roundOff =  Math.round(a * 100.00)/100.00;
-
-        System.out.println(roundOff);
     }
 }
