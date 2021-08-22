@@ -1,8 +1,8 @@
 package com.libs.neuralcore.config;
 
-import com.libs.neuralcore.data.builder.impl.ModelBuilderImpl;
-import com.libs.neuralcore.data.praparer.impl.DataPreparerImpl;
-import com.libs.neuralcore.sample.impl.SampleCreatorImpl;
+import com.libs.neuralcore.data.builder.ModelBuilder;
+import com.libs.neuralcore.data.praparer.DataPreparer;
+import com.libs.neuralcore.sample.SampleCreator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,7 @@ public class Config {
 
     private final Logger logger = LoggerFactory.getLogger(Config.class);
 
-    @Value("${download.url:")
+    @Value("${download.url:}")
     private String downloadUrl;
 
     @Value("${download.path:}")
@@ -54,37 +54,37 @@ public class Config {
     private int numEpochs;
 
     @Bean
-    public SampleCreatorImpl initSampleCreatorImpl () {
-        SampleCreatorImpl sampleCreatorImpl = new SampleCreatorImpl();
-        if (!downloadUrl.isEmpty()) {
+    public SampleCreator initSampleCreatorImpl () {
+        SampleCreator sampleCreator = new SampleCreator();
+        if (!downloadUrl.isBlank()) {
             logger.debug("Reading download url");
-            sampleCreatorImpl.setUrl(downloadUrl);
+            sampleCreator.setUrl(downloadUrl);
         }
-        if (!sampleFile.isEmpty()) {
+        if (!sampleFile.isBlank()) {
             logger.debug("Reading download path");
-            sampleCreatorImpl.setDownloadPath(downloadPath);
+            sampleCreator.setDownloadPath(downloadPath);
             logger.debug("Reading sample file name");
-            sampleCreatorImpl.setSampleFile(sampleFile);
+            sampleCreator.setSampleFile(sampleFile);
         }
-        if (innerUnpackPath.isEmpty()) {
+        if (!innerUnpackPath.isBlank()) {
             logger.debug("Setting inner pack paths");
-            sampleCreatorImpl.setInnerUnpackPath(innerUnpackPath);
-            sampleCreatorImpl.setUnpackPath(unpackPath);
-            sampleCreatorImpl.setInnerFile(innerFile);
+            sampleCreator.setInnerUnpackPath(innerUnpackPath);
+            sampleCreator.setUnpackPath(unpackPath);
+            sampleCreator.setInnerFile(innerFile);
         }
-        logger.debug("SampleCreatorImpl was created successfully");
-        return new SampleCreatorImpl();
+        logger.debug("SampleCreator was created successfully");
+        return sampleCreator;
     }
 
     @Bean
-    public DataPreparerImpl initDataPreparer(){
-        DataPreparerImpl dataPreparerImpl = new DataPreparerImpl(height, width, channels, batchSize, outputNum);
-        dataPreparerImpl.setSamplePath(samplePath);
-        return dataPreparerImpl;
+    public DataPreparer initDataPreparer(){
+        DataPreparer dataPreparer = new DataPreparer(height, width, channels, batchSize, outputNum);
+        dataPreparer.setSamplePath(samplePath);
+        return dataPreparer;
     }
 
     @Bean
-    public ModelBuilderImpl initModelBuilder(){
-        return new ModelBuilderImpl(height, width, channels, numEpochs, outputNum);
+    public ModelBuilder initModelBuilder(){
+        return new ModelBuilder(height, width, channels, numEpochs, outputNum);
     }
 }

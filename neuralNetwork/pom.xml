@@ -11,6 +11,7 @@
 
     <modules>
         <module>neural-core</module>
+        <module>application</module>
     </modules>
 
 </project>

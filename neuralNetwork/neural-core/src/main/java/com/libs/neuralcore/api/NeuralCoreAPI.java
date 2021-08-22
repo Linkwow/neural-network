@@ -2,45 +2,44 @@ package com.libs.neuralcore.api;
 
 import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.praparer.DataPreparer;
-import com.libs.neuralcore.sample.impl.SampleCreatorImpl;
-import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
+import com.libs.neuralcore.sample.SampleCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class NeuralCoreAPI {
 
-    private SampleCreatorImpl sample;
+    private SampleCreator sampleCreator;
 
-    private DataPreparer<DataSetIterator> dataPreparer;
+    private DataPreparer dataPreparer;
 
-    private ModelBuilder<DataSetIterator> modelBuilder;
+    private ModelBuilder modelBuilder;
 
     @Autowired
-    public void setSample(SampleCreatorImpl sample) {
-        this.sample = sample;
+    protected void setSampleCreator(SampleCreator sampleCreator) {
+        this.sampleCreator = sampleCreator;
     }
 
     @Autowired
-    public void setDataPreparer(DataPreparer<DataSetIterator> dataPreparer) {
+    protected void setDataPreparer(DataPreparer dataPreparer) {
         this.dataPreparer = dataPreparer;
     }
 
     @Autowired
-    public void setModelBuilder(ModelBuilder<DataSetIterator> modelBuilder) {
+    protected void setModelBuilder(ModelBuilder modelBuilder) {
         this.modelBuilder = modelBuilder;
     }
 
     public void downloadSample(){
-        sample.downloadSample();
+        sampleCreator.downloadSample();
     }
 
     public void unpackSample(){
-        sample.unpackSample();
+        sampleCreator.unpackSample();
     }
 
     public void removeSampleArchive(){
-        sample.clear();
+        sampleCreator.clear();
     }
 
     public void trainModel(){
