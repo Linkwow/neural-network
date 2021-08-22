@@ -3,8 +3,11 @@ package com.libs.neuralcore.api;
 import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.praparer.DataPreparer;
 import com.libs.neuralcore.sample.SampleCreator;
+import net.lingala.zip4j.exception.ZipException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 public class NeuralCoreAPI {
@@ -30,25 +33,25 @@ public class NeuralCoreAPI {
         this.modelBuilder = modelBuilder;
     }
 
-    public void downloadSample(){
+    public void downloadSample() throws IOException {
         sampleCreator.downloadSample();
     }
 
-    public void unpackSample(){
+    public void unpackSample() throws ZipException {
         sampleCreator.unpackSample();
     }
 
-    public void removeSampleArchive(){
+    public void removeSampleArchive() throws IOException {
         sampleCreator.clear();
     }
 
-    public void trainModel(){
+    public void trainModel() {
         modelBuilder.configureModel();
         modelBuilder.initializeModel();
         modelBuilder.trainModel(dataPreparer.createTrainDataSet());
     }
 
-    public void evaluateModel(){
+    public void evaluateModel() {
         modelBuilder.evaluateModel(dataPreparer.createTestDataSet());
     }
 }

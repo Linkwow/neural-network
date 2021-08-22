@@ -16,9 +16,13 @@ public class NeuralService {
     }
 
     public String createNeuralNetworkModel(){
-        neuralCoreAPI.downloadSample();
-        neuralCoreAPI.unpackSample();
-        neuralCoreAPI.removeSampleArchive();
-        return "Download Complete";
+        try {
+            neuralCoreAPI.downloadSample();
+            neuralCoreAPI.unpackSample();
+            neuralCoreAPI.removeSampleArchive();
+            return "Download Complete";
+        } catch (Exception e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

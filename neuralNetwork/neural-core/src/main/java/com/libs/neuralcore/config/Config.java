@@ -2,17 +2,15 @@ package com.libs.neuralcore.config;
 
 import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.praparer.DataPreparer;
+import com.libs.neuralcore.exceptions.InitializeException;
+import com.libs.neuralcore.sample.impl.SampleCreatorImpl;
 import com.libs.neuralcore.sample.SampleCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class Config {
-
-    private final Logger logger = LoggerFactory.getLogger(Config.class);
 
     @Value("${download.url:}")
     private String downloadUrl;
@@ -54,26 +52,8 @@ public class Config {
     private int numEpochs;
 
     @Bean
-    public SampleCreator initSampleCreatorImpl () {
-        SampleCreator sampleCreator = new SampleCreator();
-        if (!downloadUrl.isBlank()) {
-            logger.debug("Reading download url");
-            sampleCreator.setUrl(downloadUrl);
-        }
-        if (!sampleFile.isBlank()) {
-            logger.debug("Reading download path");
-            sampleCreator.setDownloadPath(downloadPath);
-            logger.debug("Reading sample file name");
-            sampleCreator.setSampleFile(sampleFile);
-        }
-        if (!innerUnpackPath.isBlank()) {
-            logger.debug("Setting inner pack paths");
-            sampleCreator.setInnerUnpackPath(innerUnpackPath);
-            sampleCreator.setUnpackPath(unpackPath);
-            sampleCreator.setInnerFile(innerFile);
-        }
-        logger.debug("SampleCreator was created successfully");
-        return sampleCreator;
+    public SampleCreator initSampleCreatorImpl () throws InitializeException {
+        return new SampleCreatorImpl(downloadUrl, downloadPath, sampleFile, unpackPath, innerUnpackPath, innerFile);
     }
 
     @Bean
