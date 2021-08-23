@@ -1,10 +1,13 @@
 package com.libs.neuralcore.config;
 
 import com.libs.neuralcore.data.builder.ModelBuilder;
-import com.libs.neuralcore.data.praparer.DataPreparer;
+import com.libs.neuralcore.data.builder.impl.ModelBuilderImpl;
+import com.libs.neuralcore.data.preparer.DataPreparer;
+import com.libs.neuralcore.data.preparer.impl.DataPreparerImpl;
 import com.libs.neuralcore.exceptions.InitializeException;
 import com.libs.neuralcore.sample.impl.SampleCreatorImpl;
 import com.libs.neuralcore.sample.SampleCreator;
+import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,20 +54,21 @@ public class Config {
     @Value("${numEpochs}")
     private int numEpochs;
 
+    @Value("${seed}")
+    private int seed;
+
     @Bean
     public SampleCreator initSampleCreatorImpl () throws InitializeException {
         return new SampleCreatorImpl(downloadUrl, downloadPath, sampleFile, unpackPath, innerUnpackPath, innerFile);
     }
 
     @Bean
-    public DataPreparer initDataPreparer(){
-        DataPreparer dataPreparer = new DataPreparer(height, width, channels, batchSize, outputNum);
-        dataPreparer.setSamplePath(samplePath);
-        return dataPreparer;
+    public DataPreparer<DataSetIterator> initDataPreparer(){
+        return new DataPreparerImpl(samplePath, height, width, channels, batchSize, outputNum, seed);
     }
 
     @Bean
-    public ModelBuilder initModelBuilder(){
-        return new ModelBuilder(height, width, channels, numEpochs, outputNum);
+    public ModelBuilder<DataSetIterator> initModelBuilderImpl(){
+        return new ModelBuilderImpl(height, width, channels, numEpochs, outputNum, seed);
     }
 }

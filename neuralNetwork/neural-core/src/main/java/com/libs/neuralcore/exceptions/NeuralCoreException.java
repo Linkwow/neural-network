@@ -5,5 +5,4 @@ public class NeuralCoreException extends Exception {
     public NeuralCoreException(String message){
         super(message);
     }
-
 }

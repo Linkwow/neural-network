@@ -5,5 +5,4 @@ public class InitializeException extends NeuralCoreException {
     public InitializeException(String message) {
         super(message);
     }
-
 }
