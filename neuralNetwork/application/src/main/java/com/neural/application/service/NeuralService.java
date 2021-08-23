@@ -5,6 +5,8 @@ import com.libs.neuralcore.api.NeuralCoreAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class NeuralService {
 
@@ -15,14 +17,25 @@ public class NeuralService {
         this.neuralCoreAPI = neuralCoreAPI;
     }
 
-    public String createNeuralNetworkModel(){
+    public String createNeuralNetworkModel() {
         try {
             neuralCoreAPI.downloadSample();
             neuralCoreAPI.unpackSample();
             neuralCoreAPI.removeSampleArchive();
+            neuralCoreAPI.trainModel();
+            neuralCoreAPI.evaluateModel();
             return "Download Complete";
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    public List<Object> getLabels(){
+       return neuralCoreAPI.getLabels();
+    }
+
+    public List<Object> getDataSets(){
+        return neuralCoreAPI.getDataSets();
+    }
+
 }
