@@ -1,5 +1,6 @@
 package com.neural.application.controller;
 
+import com.libs.neuralcore.exceptions.ParameterException;
 import com.neural.application.service.NeuralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +25,22 @@ public class NeuralController {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/download-from-source")
+    public ModelAndView downloadSample() {
+        ModelAndView modelAndView = new ModelAndView("download");
+        try {
+            String result = neuralService.downloadSampleFromSource();
+            modelAndView.addObject("result", result);
+        } catch (ParameterException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+        return modelAndView;
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/demo")
     public ModelAndView demoImage() {
+        neuralService.createDataForDemo();
         ModelAndView modelAndView = new ModelAndView("demo");
         Map<String, Object>
                 data = new HashMap<>(),
@@ -36,4 +51,6 @@ public class NeuralController {
         modelAndView.addAllObjects(labels);
         return modelAndView;
     }
+
+
 }

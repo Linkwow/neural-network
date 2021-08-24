@@ -4,7 +4,7 @@ import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.builder.impl.ModelBuilderImpl;
 import com.libs.neuralcore.data.preparer.DataPreparer;
 import com.libs.neuralcore.data.preparer.impl.DataPreparerImpl;
-import com.libs.neuralcore.exceptions.InitializeException;
+import com.libs.neuralcore.exceptions.ParameterException;
 import com.libs.neuralcore.sample.impl.SampleCreatorImpl;
 import com.libs.neuralcore.sample.SampleCreator;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
@@ -58,7 +58,7 @@ public class Config {
     private int seed;
 
     @Bean
-    public SampleCreator initSampleCreatorImpl () throws InitializeException {
+    public SampleCreator initSampleCreatorImpl () throws ParameterException {
         return new SampleCreatorImpl(downloadUrl, downloadPath, sampleFile, unpackPath, innerUnpackPath, innerFile);
     }
 

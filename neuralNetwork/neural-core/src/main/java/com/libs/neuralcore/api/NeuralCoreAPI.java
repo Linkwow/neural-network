@@ -2,6 +2,7 @@ package com.libs.neuralcore.api;
 
 import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.preparer.DataPreparer;
+import com.libs.neuralcore.exceptions.ParameterException;
 import com.libs.neuralcore.sample.SampleCreator;
 import net.lingala.zip4j.exception.ZipException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -10,7 +11,7 @@ import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -22,9 +23,9 @@ public class NeuralCoreAPI {
 
     private ModelBuilder<DataSetIterator> modelBuilder;
 
-    private List<Object> dataSets;
+    private final List<Object> dataSet = new ArrayList<>();
 
-    private List<Object> labels;
+    private final List<Object> labels = new ArrayList<>();
 
     @Autowired
     protected void setSampleCreator(SampleCreator sampleCreator) {
@@ -41,19 +42,15 @@ public class NeuralCoreAPI {
         this.modelBuilder = modelBuilder;
     }
 
-    public NeuralCoreAPI() {
-        parseDataSetAndLabels();
-    }
-
-    public void downloadSample() throws IOException {
+    public void downloadSample() throws ParameterException {
         sampleCreator.downloadSample();
     }
 
-    public void unpackSample() throws ZipException {
+    public void unpackSample() throws ParameterException {
         sampleCreator.unpackSample();
     }
 
-    public void removeSampleArchive() throws IOException {
+    public void removeSampleArchive() throws ParameterException {
         sampleCreator.clear();
     }
 
@@ -64,24 +61,26 @@ public class NeuralCoreAPI {
     }
 
     public Evaluation evaluateModel() {
-       return modelBuilder.evaluateModel(dataPreparer.createTestDataSetIterator());
+        return modelBuilder.evaluateModel(dataPreparer.createTestDataSetIterator());
     }
 
-    private void parseDataSetAndLabels(){
+    public void createDataForDemo() {
         DataSetIterator demoIterator = dataPreparer.createDemoDataSetIterator();
         List<Object> objectList = dataPreparer.demo(demoIterator);
         for (int i = 0; i < objectList.size(); i++) {
-            if(i % 2 == 0)
-                dataSets.add(objectList.get(i));
+            if (i % 2 == 0)
+                dataSet.add(objectList.get(i));
             else
                 labels.add(objectList.get(i));
         }
     }
 
+    //fixme : here should be List<DataSet>
     public List<Object> getDataSets() {
-        return dataSets;
+        return dataSet;
     }
 
+    //fixme : here should be List<String>
     public List<Object> getLabels() {
         return labels;
     }
