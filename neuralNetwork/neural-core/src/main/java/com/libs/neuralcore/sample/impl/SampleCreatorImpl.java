@@ -56,7 +56,7 @@ public class SampleCreatorImpl implements SampleCreator {
     public void downloadSample() throws ParameterException {
         try {
             FileUtils.copyURLToFile(url, sampleFile);
-            logger.info(sampleFile + " was downloaded from" + url.getPath() + " successfully.");
+            logger.info(sampleFile + " was downloaded from " + downloadPath + " successfully.");
         } catch (IOException e) {
             logger.error("Exception during downloading" + sampleFile + " from " + url.getPath());
             throw new ParameterException(e.getMessage());

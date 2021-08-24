@@ -32,14 +32,6 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
 
     private final int MAX_RANGE = 1;
 
-    private final File[] samplePath;
-
-    private FileSplit trainingData;
-
-    private FileSplit testingData;
-
-    private final ImageRecordReader imageRecordReader;
-
     private final int height;
 
     private final int width;
@@ -49,6 +41,14 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
     private final int batchSize;
 
     private final int outputNum;
+
+    private final File[] samplePath;
+
+    private FileSplit trainingData;
+
+    private FileSplit testingData;
+
+    private final ImageRecordReader imageRecordReader;
 
     private final DataNormalization scale = new ImagePreProcessingScaler(MIN_RANGE, MAX_RANGE);
 

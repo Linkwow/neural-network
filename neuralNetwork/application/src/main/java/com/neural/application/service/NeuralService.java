@@ -2,6 +2,7 @@ package com.neural.application.service;
 
 
 import com.libs.neuralcore.api.NeuralCoreAPI;
+import com.libs.neuralcore.exceptions.ParameterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +18,11 @@ public class NeuralService {
         this.neuralCoreAPI = neuralCoreAPI;
     }
 
-    public String createNeuralNetworkModel() {
-        try {
+    public String downloadSampleFromSource() throws ParameterException {
             neuralCoreAPI.downloadSample();
             neuralCoreAPI.unpackSample();
             neuralCoreAPI.removeSampleArchive();
-            neuralCoreAPI.trainModel();
-            neuralCoreAPI.evaluateModel();
-            return "Download Complete";
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+            return "Downloading and unpacking was finished.";
     }
 
     public List<Object> getLabels(){
@@ -36,6 +31,10 @@ public class NeuralService {
 
     public List<Object> getDataSets(){
         return neuralCoreAPI.getDataSets();
+    }
+
+    public void createDataForDemo(){
+        neuralCoreAPI.createDataForDemo();
     }
 
 }
