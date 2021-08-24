@@ -1,13 +1,12 @@
 package com.libs.neuralcore.sample;
 
-import net.lingala.zip4j.exception.ZipException;
-import java.io.IOException;
+import com.libs.neuralcore.exceptions.ParameterException;
 
 public interface SampleCreator {
 
-    void downloadSample() throws IOException;
+    void downloadSample() throws ParameterException;
 
-    void unpackSample() throws ZipException;
+    void unpackSample() throws ParameterException;
 
-    void clear() throws IOException;
+    void clear() throws ParameterException;
 }
