@@ -1,6 +1,7 @@
 package com.libs.neuralcore.data.preparer.impl;
 
 import com.libs.neuralcore.data.preparer.DataPreparer;
+import com.libs.neuralcore.util.Constants;
 import org.datavec.api.io.labels.ParentPathLabelGenerator;
 import org.datavec.api.records.listener.impl.LogRecordListener;
 import org.datavec.api.split.FileSplit;
@@ -25,13 +26,6 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
 
     private final Logger logger = LoggerFactory.getLogger(DataPreparerImpl.class);
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private final int LABEL_INDEX = 1;
-
-    private final int MIN_RANGE = 0;
-
-    private final int MAX_RANGE = 1;
-
     private final int height;
 
     private final int width;
@@ -50,9 +44,13 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
 
     private final ImageRecordReader imageRecordReader;
 
-    private final DataNormalization scale = new ImagePreProcessingScaler(MIN_RANGE, MAX_RANGE);
+    private final DataNormalization scale = new ImagePreProcessingScaler(Constants.MIN_RANGE, Constants.MAX_RANGE);
 
     private final Random random;
+
+    private final List<DataSet> dataSets = new ArrayList<>();
+
+    private final List<List<String>> labels = new ArrayList<>();
 
     private void setTrainingData(FileSplit trainingData) {
         this.trainingData = trainingData;
@@ -88,23 +86,31 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
     }
 
     @Override
-    public DataSetIterator createDemoDataSetIterator() {
-        splitFiles();
-        DataSetIterator dataSetIterator = new RecordReaderDataSetIterator(createDemoImage(), 1, LABEL_INDEX, outputNum);
-        scale.fit(dataSetIterator);
-        dataSetIterator.setPreProcessor(scale);
-        return dataSetIterator;
-    }
-
-    @Override
-    public List<Object> demo(DataSetIterator dataSetIterator) {
-        List<Object> dataSets = new ArrayList<>();
+    public void createDemoDataSet() {
+        DataSetIterator dataSetIterator = createDemoDataSetIterator();
         for (int i = 0; i < 2; i++) {
             DataSet ds = dataSetIterator.next();
             dataSets.add(ds);
-            dataSets.add(dataSetIterator.getLabels());
+            labels.add(dataSetIterator.getLabels());
         }
+    }
+
+    @Override
+    public List<DataSet> getDataSets() {
         return dataSets;
+    }
+
+    @Override
+    public List<List<String>> getLabels() {
+        return labels;
+    }
+
+    private DataSetIterator createDemoDataSetIterator() {
+        splitFiles();
+        DataSetIterator dataSetIterator = new RecordReaderDataSetIterator(createDemoImage(), Constants.BATCH_SIZE_FOR_DEMO, Constants.LABEL_INDEX, outputNum);
+        scale.fit(dataSetIterator);
+        dataSetIterator.setPreProcessor(scale);
+        return dataSetIterator;
     }
 
     private void createTrainImage() {
@@ -131,14 +137,14 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
             imageRecordReader.initialize(trainingData);
             imageRecordReader.setListeners(new LogRecordListener());
         } catch (IOException e) {
-            logger.error("Error during initialize demo data");
+            logger.error("Error during initialize createDemoDataSet data");
             throw new RuntimeException(e);
         }
         return imageRecordReader;
     }
 
     private DataSetIterator createIterator(ImageRecordReader imageRecordReader) {
-        DataSetIterator dataSetIterator = new RecordReaderDataSetIterator(imageRecordReader, batchSize, LABEL_INDEX, outputNum);
+        DataSetIterator dataSetIterator = new RecordReaderDataSetIterator(imageRecordReader, batchSize, Constants.LABEL_INDEX, outputNum);
         scale.fit(dataSetIterator);
         dataSetIterator.setPreProcessor(scale);
         return dataSetIterator;

@@ -11,5 +11,5 @@ public interface ModelBuilder<T> {
 
     MultiLayerNetwork trainModel(T trainDataIterator);
 
-    Evaluation evaluateModel(T testDataIterator);
+    Evaluation evaluateModel(T testDataIterator, MultiLayerNetwork model);
 }

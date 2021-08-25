@@ -39,14 +39,12 @@ public class SampleCreatorImpl implements SampleCreator {
             String innerUnpackPath,
             String innerFile) throws ParameterException {
         try {
-            logger.info("Sample Creator is being initializing now");
             this.setUrl(downloadUrl);
             this.setDownloadPath(downloadPath);
             this.setSampleFile(sampleFile);
             this.setUnpackPath(unpackPath);
             this.setInnerUnpackPath(innerUnpackPath);
             this.setInnerFile(innerFile);
-            logger.info("Sample Creator was initialized successfully");
         } catch (MalformedURLException e) {
             logger.error("Exception during Sample Creator is being initializing. Check url path " + downloadUrl);
             throw new ParameterException(e.getMessage());
@@ -56,7 +54,6 @@ public class SampleCreatorImpl implements SampleCreator {
     public void downloadSample() throws ParameterException {
         try {
             FileUtils.copyURLToFile(url, sampleFile);
-            logger.info(sampleFile + " was downloaded from " + downloadPath + " successfully.");
         } catch (IOException e) {
             logger.error("Exception during downloading" + sampleFile + " from " + url.getPath());
             throw new ParameterException(e.getMessage());
@@ -67,7 +64,6 @@ public class SampleCreatorImpl implements SampleCreator {
         zipFile = new ZipFile(sampleFile);
         try {
             zipFile.extractAll(unpackPath);
-            logger.debug(sampleFile + " was extracted successfully from " + unpackPath);
             //this condition was added in case when your sample pack has inner pack (e.g. from gitHub)
             if (hasInnerPack())
                 innerPack();

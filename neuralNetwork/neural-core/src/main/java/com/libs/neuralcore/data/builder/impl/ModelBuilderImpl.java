@@ -19,12 +19,8 @@ import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.learning.config.Nesterovs;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ModelBuilderImpl implements ModelBuilder<DataSetIterator> {
-
-    private final Logger logger = LoggerFactory.getLogger(ModelBuilderImpl.class);
 
     private MultiLayerConfiguration configuration;
 
@@ -91,7 +87,7 @@ public class ModelBuilderImpl implements ModelBuilder<DataSetIterator> {
     }
 
     @Override
-    public Evaluation evaluateModel(DataSetIterator testDataSet) {
+    public Evaluation evaluateModel(DataSetIterator testDataSet, MultiLayerNetwork model) {
         Evaluation evaluation = new Evaluation(outputNum);
         while (testDataSet.hasNext()) {
             DataSet next = testDataSet.next();

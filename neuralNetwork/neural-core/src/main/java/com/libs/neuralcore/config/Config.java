@@ -2,6 +2,8 @@ package com.libs.neuralcore.config;
 
 import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.builder.impl.ModelBuilderImpl;
+import com.libs.neuralcore.data.interact.ModelInteract;
+import com.libs.neuralcore.data.interact.impl.ModelInteractImpl;
 import com.libs.neuralcore.data.preparer.DataPreparer;
 import com.libs.neuralcore.data.preparer.impl.DataPreparerImpl;
 import com.libs.neuralcore.exceptions.ParameterException;
@@ -57,6 +59,9 @@ public class Config {
     @Value("${seed}")
     private int seed;
 
+    @Value("${model.save}")
+    private String modelSave;
+
     @Bean
     public SampleCreator initSampleCreatorImpl () throws ParameterException {
         return new SampleCreatorImpl(downloadUrl, downloadPath, sampleFile, unpackPath, innerUnpackPath, innerFile);
@@ -70,5 +75,10 @@ public class Config {
     @Bean
     public ModelBuilder<DataSetIterator> initModelBuilderImpl(){
         return new ModelBuilderImpl(height, width, channels, numEpochs, outputNum, seed);
+    }
+
+    @Bean
+    public ModelInteract initModelInteract(){
+        return new ModelInteractImpl(modelSave, height, width, channels);
     }
 }
