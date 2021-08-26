@@ -23,7 +23,7 @@ public class ModelInteractImpl implements ModelInteract {
     @SuppressWarnings("FieldMayBeFinal")
     private static Logger logger  = LoggerFactory.getLogger(ModelInteractImpl.class);
 
-    private final String fileName;
+    private final File file;
 
     private final int height;
 
@@ -34,7 +34,7 @@ public class ModelInteractImpl implements ModelInteract {
     private final List<Integer> labelList = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 
     public ModelInteractImpl(String fileName, int height, int width, int channels){
-        this.fileName = fileName;
+        this.file = new File(fileName);
         this.height = height;
         this.width = width;
         this.channels = channels;
@@ -42,18 +42,17 @@ public class ModelInteractImpl implements ModelInteract {
 
     @Override
     public File save(MultiLayerNetwork model) throws ParameterException {
-        File file = new File(fileName);
         try {
             ModelSerializer.writeModel(model, file, false);
         } catch (IOException e) {
-            logger.error("Error during model was being saved into " + fileName);
+            logger.error("Error during model was being saved into " + file.getAbsolutePath());
             throw new ParameterException(e.getMessage());
         }
         return file;
     }
 
     @Override
-    public MultiLayerNetwork load(File file) throws ParameterException {
+    public MultiLayerNetwork load() throws ParameterException {
         try {
             return ModelSerializer.restoreMultiLayerNetwork(file);
         } catch (IOException e) {
@@ -74,8 +73,6 @@ public class ModelInteractImpl implements ModelInteract {
             logger.error("Error during image was being checked.");
             throw new ParameterException(e.getMessage());
         }
-/*        INDArray output = model.output(image);
-        return output.toString();*/
     }
 
     @Override
@@ -84,6 +81,7 @@ public class ModelInteractImpl implements ModelInteract {
     }
 
     private File imageToCheck(){
+        System.setProperty("java.awt.headless", "false");
         JFileChooser fileChooser = new JFileChooser();
         int ret = fileChooser.showOpenDialog(null);
         if(ret == JFileChooser.APPROVE_OPTION){

@@ -3,13 +3,13 @@ package com.libs.neuralcore.api;
 import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.interact.ModelInteract;
 import com.libs.neuralcore.data.preparer.DataPreparer;
+import com.libs.neuralcore.demo.DemoData;
 import com.libs.neuralcore.exceptions.ParameterException;
 import com.libs.neuralcore.sample.SampleCreator;
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.nd4j.evaluation.classification.Evaluation;
 
-import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,16 +70,16 @@ public class NeuralCoreAPI {
         return modelInteract.save(model);
     }
 
-    public MultiLayerNetwork loadModel(File file) throws ParameterException {
-        return modelInteract.load(file);
+    public MultiLayerNetwork loadModel() throws ParameterException {
+        return modelInteract.load();
     }
 
     public Evaluation evaluateModel(MultiLayerNetwork model) {
         return modelBuilder.evaluateModel(dataPreparer.createTestDataSetIterator(), model);
     }
 
-    public void createDataForDemo() {
-        dataPreparer.createDemoDataSet();
+    public List<DemoData> createDataForDemo() {
+        return dataPreparer.createDemoDataSet();
     }
 
     public String checkTheImage(MultiLayerNetwork model) throws ParameterException {
@@ -88,13 +88,5 @@ public class NeuralCoreAPI {
 
     public String getCheckLabels() {
         return modelInteract.getCheckLabelList();
-    }
-
-    public List<DataSet> getDataSet() {
-        return dataPreparer.getDataSets();
-    }
-
-    public List<List<String>> getLabels() {
-        return dataPreparer.getLabels();
     }
 }

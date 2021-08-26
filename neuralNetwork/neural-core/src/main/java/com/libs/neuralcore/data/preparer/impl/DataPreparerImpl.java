@@ -1,6 +1,7 @@
 package com.libs.neuralcore.data.preparer.impl;
 
 import com.libs.neuralcore.data.preparer.DataPreparer;
+import com.libs.neuralcore.demo.DemoData;
 import com.libs.neuralcore.util.Constants;
 import org.datavec.api.io.labels.ParentPathLabelGenerator;
 import org.datavec.api.records.listener.impl.LogRecordListener;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
@@ -36,7 +38,7 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
 
     private final int outputNum;
 
-    private final File[] samplePath;
+    private final String samplePath;
 
     private FileSplit trainingData;
 
@@ -47,10 +49,6 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
     private final DataNormalization scale = new ImagePreProcessingScaler(Constants.MIN_RANGE, Constants.MAX_RANGE);
 
     private final Random random;
-
-    private final List<DataSet> dataSets = new ArrayList<>();
-
-    private final List<List<String>> labels = new ArrayList<>();
 
     private void setTrainingData(FileSplit trainingData) {
         this.trainingData = trainingData;
@@ -63,7 +61,7 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
     public DataPreparerImpl(String samplePath, int height, int width, int channels, int batchSize, int outputNum, int seed) {
         this.batchSize = batchSize;
         this.outputNum = outputNum;
-        this.samplePath = Path.of(samplePath).toFile().listFiles();
+        this.samplePath = samplePath;
         this.random = new Random(seed);
         this.height = height;
         this.width = width;
@@ -86,23 +84,17 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
     }
 
     @Override
-    public void createDemoDataSet() {
+    public List<DemoData> createDemoDataSet() {
         DataSetIterator dataSetIterator = createDemoDataSetIterator();
+        List<DemoData> demoDataList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
             DataSet ds = dataSetIterator.next();
-            dataSets.add(ds);
-            labels.add(dataSetIterator.getLabels());
+            DemoData demoData = new DemoData();
+            demoData.setDataSet(ds.toString());
+            demoData.setLabels(dataSetIterator.getLabels().toString());
+            demoDataList.add(demoData);
         }
-    }
-
-    @Override
-    public List<DataSet> getDataSets() {
-        return dataSets;
-    }
-
-    @Override
-    public List<List<String>> getLabels() {
-        return labels;
+        return demoDataList;
     }
 
     private DataSetIterator createDemoDataSetIterator() {
@@ -151,7 +143,8 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
     }
 
     private void splitFiles() {
-        for (File pathToDirectory : samplePath) {
+        File[] directories = Path.of(samplePath).toFile().listFiles();
+        for (File pathToDirectory : Optional.ofNullable(directories).orElseThrow()) {
             if (pathToDirectory.isDirectory() && pathToDirectory.getPath().contains("training"))
                 setTrainingData(new FileSplit(pathToDirectory, NativeImageLoader.ALLOWED_FORMATS, random));
             else if (pathToDirectory.isDirectory() && pathToDirectory.getPath().contains("testing"))

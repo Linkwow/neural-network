@@ -9,7 +9,7 @@ public interface ModelInteract {
 
     File save(MultiLayerNetwork model) throws ParameterException;
 
-    MultiLayerNetwork load(File file) throws ParameterException;
+    MultiLayerNetwork load() throws ParameterException;
 
     String checkImage(MultiLayerNetwork model) throws ParameterException;
 
