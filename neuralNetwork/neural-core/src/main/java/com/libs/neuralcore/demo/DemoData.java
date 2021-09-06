@@ -1,13 +1,21 @@
 package com.libs.neuralcore.demo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DemoData {
 
-    private String dataSet;
+    private final List<DemoDataSet> dataSetList = new ArrayList<>();
 
     private String labels;
 
-    public void setDataSet(String dataSet) {
-        this.dataSet = dataSet;
+    public void setData(List<String> dataSet) {
+        DemoDataSet demoDataSet;
+        for (String s : dataSet) {
+            demoDataSet = new DemoDataSet();
+            demoDataSet.setDataSet(s);
+            dataSetList.add(demoDataSet);
+        }
     }
 
     public void setLabels(String labels) {
@@ -15,8 +23,8 @@ public class DemoData {
     }
 
     @SuppressWarnings("unused")
-    public String getDataSet() {
-        return dataSet;
+    public List<DemoDataSet> getData() {
+        return dataSetList;
     }
 
     @SuppressWarnings("unused")
