@@ -4,10 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Evaluation</title>
+    <link rel="stylesheet" type="text/css" href="../css/myStyle.css">
 </head>
 
 <body>
-<p>{{result}}</p>
+{{#result}}
+    <div class="data">
+        <pre>{{dataSet}}</pre>
+    </div>
+{{/result}}
+<div class="back">
+    <a href="http://localhost:8080/">back</a>
+</div>
 </body>
-
 </html>

@@ -4,13 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
+    <link rel="stylesheet" href="../css/myStyle.css">
 </head>
 
 <body>
 {{#data}}
-<p>{{dataSet}}</p>
-<p>{{labels}}</p>
+    {{#dataSetList}}
+        <div class="data">
+            <pre>{{dataSet}}</pre>
+        </div>
+    {{/dataSetList}}
+    <div class="data">
+        <pre>{{labels}}</pre>
+    </div>
 {{/data}}
+<div class="back">
+    <a href="http://localhost:8080/">back</a>
+</div>
 </body>
-
 </html>
