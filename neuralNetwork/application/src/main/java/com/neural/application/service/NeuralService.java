@@ -3,9 +3,9 @@ package com.neural.application.service;
 
 import com.libs.neuralcore.api.NeuralCoreAPI;
 import com.libs.neuralcore.demo.DemoData;
+import com.libs.neuralcore.demo.DemoDataSet;
 import com.libs.neuralcore.exceptions.ParameterException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.nd4j.evaluation.classification.Evaluation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class NeuralService {
         return neuralCoreAPI.saveModel(neuralCoreAPI.trainModel());
     }
 
-    public Evaluation evaluateModel() throws ParameterException {
+    public List<DemoDataSet> evaluateModel() throws ParameterException {
         model = neuralCoreAPI.loadModel();
         return neuralCoreAPI.evaluateModel(model);
     }
@@ -49,7 +49,7 @@ public class NeuralService {
         return neuralCoreAPI.checkTheImage(model);
     }
 
-    public String getCheckLabels(){
+    public String getCheckLabels() {
         return neuralCoreAPI.getCheckLabels();
     }
 }

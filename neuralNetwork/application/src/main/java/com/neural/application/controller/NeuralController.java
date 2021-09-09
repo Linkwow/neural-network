@@ -2,7 +2,6 @@ package com.neural.application.controller;
 
 import com.libs.neuralcore.exceptions.ParameterException;
 import com.neural.application.service.NeuralService;
-import org.nd4j.evaluation.classification.Evaluation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("neural-network")
+@RequestMapping("/neural-network")
 public class NeuralController {
 
     private NeuralService neuralService;
@@ -66,14 +65,12 @@ public class NeuralController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/evaluate-model")
     public ModelAndView evaluateModel() throws ParameterException {
-        Evaluation evaluation;
+        ModelAndView modelAndView = new ModelAndView("evaluate");
         try {
-            evaluation = neuralService.evaluateModel();
+            modelAndView.addObject("result", neuralService.evaluateModel());
         } catch (ParameterException e) {
             throw new ParameterException(e.getMessage());
         }
-        ModelAndView modelAndView = new ModelAndView("evaluate");
-        modelAndView.addObject("result", evaluation.stats());
         return modelAndView;
     }
 
