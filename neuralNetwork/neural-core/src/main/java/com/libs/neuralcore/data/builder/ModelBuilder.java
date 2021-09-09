@@ -1,7 +1,9 @@
 package com.libs.neuralcore.data.builder;
 
+import com.libs.neuralcore.demo.DemoDataSet;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.nd4j.evaluation.classification.Evaluation;
+
+import java.util.List;
 
 public interface ModelBuilder<T> {
 
@@ -11,5 +13,5 @@ public interface ModelBuilder<T> {
 
     MultiLayerNetwork trainModel(T trainDataIterator);
 
-    Evaluation evaluateModel(T testDataIterator, MultiLayerNetwork model);
+    List<DemoDataSet> evaluateModel(T testDataIterator, MultiLayerNetwork model);
 }

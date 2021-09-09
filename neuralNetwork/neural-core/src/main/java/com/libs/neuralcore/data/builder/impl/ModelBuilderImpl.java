@@ -1,6 +1,7 @@
 package com.libs.neuralcore.data.builder.impl;
 
 import com.libs.neuralcore.data.builder.ModelBuilder;
+import com.libs.neuralcore.demo.DemoDataSet;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -19,6 +20,10 @@ import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.nd4j.linalg.learning.config.Adam;
 import org.nd4j.linalg.learning.config.Nesterovs;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ModelBuilderImpl implements ModelBuilder<DataSetIterator> {
 
@@ -87,13 +92,20 @@ public class ModelBuilderImpl implements ModelBuilder<DataSetIterator> {
     }
 
     @Override
-    public Evaluation evaluateModel(DataSetIterator testDataSet, MultiLayerNetwork model) {
+    public List<DemoDataSet> evaluateModel(DataSetIterator testDataSet, MultiLayerNetwork model) {
         Evaluation evaluation = new Evaluation(outputNum);
         while (testDataSet.hasNext()) {
             DataSet next = testDataSet.next();
             INDArray output = model.output(next.getFeatures());
             evaluation.eval(next.getLabels(), output);
         }
-        return evaluation;
+        List<String> evaluationResult = new ArrayList<>(Arrays.asList(evaluation.stats().split("\n")));
+        List<DemoDataSet> dataSetList = new ArrayList<>();
+        for (String data : evaluationResult) {
+            DemoDataSet demoDataSet = new DemoDataSet();
+            demoDataSet.setDataSet(data);
+            dataSetList.add(demoDataSet);
+        }
+        return dataSetList;
     }
 }
