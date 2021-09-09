@@ -19,10 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
 
@@ -50,13 +47,7 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
 
     private final Random random;
 
-    private void setTrainingData(FileSplit trainingData) {
-        this.trainingData = trainingData;
-    }
-
-    private void setTestingData(FileSplit testingData) {
-        this.testingData = testingData;
-    }
+    private boolean trained;
 
     public DataPreparerImpl(String samplePath, int height, int width, int channels, int batchSize, int outputNum, int seed) {
         this.batchSize = batchSize;
@@ -69,16 +60,29 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
         this.imageRecordReader = new ImageRecordReader(height, width, channels, new ParentPathLabelGenerator());
     }
 
+    private void setTrainingData(FileSplit trainingData) {
+        this.trainingData = trainingData;
+    }
+
+    private void setTestingData(FileSplit testingData) {
+        this.testingData = testingData;
+    }
+
     @Override
     public DataSetIterator createTrainDataSetIterator() {
         splitFiles();
         createTrainImage();
+        trained = true;
         return createIterator(imageRecordReader);
     }
 
     @Override
     public DataSetIterator createTestDataSetIterator() {
-        imageRecordReader.reset();
+        if (trained) {
+            imageRecordReader.reset();
+        } else {
+            splitFiles();
+        }
         createTestImage();
         return createIterator(imageRecordReader);
     }
@@ -90,8 +94,15 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
         for (int i = 0; i < 2; i++) {
             DataSet ds = dataSetIterator.next();
             DemoData demoData = new DemoData();
-            demoData.setDataSet(ds.toString());
-            demoData.setLabels(dataSetIterator.getLabels().toString());
+            String data = ds.toString();
+            demoData.setData(Arrays.asList(data.split("\n")));
+            List<String> labels = new ArrayList<>(Arrays.asList(dataSetIterator
+                    .getLabels()
+                    .toString()
+                    .replace("[", "")
+                    .replace("]", "")
+                    .split(", ")));
+            demoData.setLabels(changeLabel(labels));
             demoDataList.add(demoData);
         }
         return demoDataList;
@@ -150,5 +161,17 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
             else if (pathToDirectory.isDirectory() && pathToDirectory.getPath().contains("testing"))
                 setTestingData(new FileSplit(pathToDirectory, NativeImageLoader.ALLOWED_FORMATS, random));
         }
+    }
+
+    private String changeLabel(List<String> labels) {
+        StringBuilder label = new StringBuilder("         ");
+        int staticCharPosition = label.length() - 1;
+        for (int i = 0; i < labels.size(); i++) {
+            label.append(labels.get(i));
+            labels.remove(i);
+            labels.add(i, label.toString());
+            label.delete(staticCharPosition + 1, label.length());
+        }
+        return labels.toString();
     }
 }
