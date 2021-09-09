@@ -4,11 +4,11 @@ import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.interact.ModelInteract;
 import com.libs.neuralcore.data.preparer.DataPreparer;
 import com.libs.neuralcore.demo.DemoData;
+import com.libs.neuralcore.demo.DemoDataSet;
 import com.libs.neuralcore.exceptions.ParameterException;
 import com.libs.neuralcore.sample.SampleCreator;
 
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.nd4j.evaluation.classification.Evaluation;
 
 import org.nd4j.linalg.dataset.api.iterator.DataSetIterator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +74,7 @@ public class NeuralCoreAPI {
         return modelInteract.load();
     }
 
-    public Evaluation evaluateModel(MultiLayerNetwork model) {
+    public List<DemoDataSet> evaluateModel(MultiLayerNetwork model) {
         return modelBuilder.evaluateModel(dataPreparer.createTestDataSetIterator(), model);
     }
 

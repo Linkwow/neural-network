@@ -162,7 +162,7 @@ public class DataPreparerImpl implements DataPreparer<DataSetIterator> {
                 setTestingData(new FileSplit(pathToDirectory, NativeImageLoader.ALLOWED_FORMATS, random));
         }
     }
-
+    //fixme : use here iterator, not raw collections methods
     private String changeLabel(List<String> labels) {
         StringBuilder label = new StringBuilder("         ");
         int staticCharPosition = label.length() - 1;
