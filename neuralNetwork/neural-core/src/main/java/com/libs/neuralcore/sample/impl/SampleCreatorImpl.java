@@ -95,7 +95,7 @@ public class SampleCreatorImpl implements SampleCreator {
 
     private void setSampleFile(String sampleFile) {
         if (!sampleFile.isBlank())
-            this.sampleFile = Path.of(downloadPath + "\\" + sampleFile).toFile();
+            this.sampleFile = Path.of(downloadPath + "/" + sampleFile).toFile();
     }
 
     private void setUnpackPath(String unpackPath) {
@@ -111,7 +111,7 @@ public class SampleCreatorImpl implements SampleCreator {
     }
 
     private void innerPack() throws ZipException {
-        zipFile = new ZipFile(unpackPath + "\\" + innerFile);
+        zipFile = new ZipFile(unpackPath + "/" + innerFile);
         zipFile.extractAll(innerUnpackPath);
     }
 
