@@ -1,7 +1,8 @@
 body {
     background-image: url("../images/NeuralNetworkMain.jpg");
-    background-repeat: repeat;
-    background-size: 1920px 1080px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .data {
