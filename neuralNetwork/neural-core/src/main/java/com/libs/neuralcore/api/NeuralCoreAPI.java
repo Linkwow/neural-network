@@ -3,8 +3,8 @@ package com.libs.neuralcore.api;
 import com.libs.neuralcore.data.builder.ModelBuilder;
 import com.libs.neuralcore.data.interact.ModelInteract;
 import com.libs.neuralcore.data.preparer.DataPreparer;
-import com.libs.neuralcore.demo.DemoData;
-import com.libs.neuralcore.demo.DemoDataSet;
+import com.libs.neuralcore.entity.DemoData;
+import com.libs.neuralcore.entity.DemoDataSet;
 import com.libs.neuralcore.exceptions.ParameterException;
 import com.libs.neuralcore.sample.SampleCreator;
 

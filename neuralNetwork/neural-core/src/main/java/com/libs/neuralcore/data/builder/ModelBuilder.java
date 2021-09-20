@@ -1,6 +1,6 @@
 package com.libs.neuralcore.data.builder;
 
-import com.libs.neuralcore.demo.DemoDataSet;
+import com.libs.neuralcore.entity.DemoDataSet;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 
 import java.util.List;

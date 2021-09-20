@@ -1,7 +1,7 @@
 package com.libs.neuralcore.data.builder.impl;
 
 import com.libs.neuralcore.data.builder.ModelBuilder;
-import com.libs.neuralcore.demo.DemoDataSet;
+import com.libs.neuralcore.entity.DemoDataSet;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;

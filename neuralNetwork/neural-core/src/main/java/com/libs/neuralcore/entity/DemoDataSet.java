@@ -1,4 +1,4 @@
-package com.libs.neuralcore.demo;
+package com.libs.neuralcore.entity;
 
 public class DemoDataSet {
 

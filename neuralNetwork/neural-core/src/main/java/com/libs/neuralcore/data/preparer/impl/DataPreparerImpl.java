@@ -1,7 +1,7 @@
 package com.libs.neuralcore.data.preparer.impl;
 
 import com.libs.neuralcore.data.preparer.DataPreparer;
-import com.libs.neuralcore.demo.DemoData;
+import com.libs.neuralcore.entity.DemoData;
 import com.libs.neuralcore.util.Constants;
 import org.datavec.api.io.labels.ParentPathLabelGenerator;
 import org.datavec.api.records.listener.impl.LogRecordListener;

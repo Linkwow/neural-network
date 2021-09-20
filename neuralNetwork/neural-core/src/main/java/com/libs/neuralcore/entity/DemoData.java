@@ -1,4 +1,4 @@
-package com.libs.neuralcore.demo;
+package com.libs.neuralcore.entity;
 
 import java.util.ArrayList;
 import java.util.List;
