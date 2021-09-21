@@ -1,23 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>Main page</title>
-    <link href="css/myStyle.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/myStyle.css">
 </head>
-
 <body>
-<h3>Menu</h3>
-<div class="back">
-    <a href="http://localhost:8080/neural-network/download-from-source">Download sample(it will take a few minutes)</a>
-</div>
-<p></p>
-<h4>You should have a directory with sample before you start use next functions.</h4>
-<div class="back">
-    <a href="http://localhost:8080/neural-network/demo">Demo</a><br>
-    <a href="http://localhost:8080/neural-network/train-model">Train model</a><br>
-    <a href="http://localhost:8080/neural-network/evaluate-model">Evaluate model</a><br>
-    <a href="http://localhost:8080/neural-network/check-model">Check model</a><br></div>
+<header class="header">
+    <div class="header__inner">
+        <h1 class="header__inner-text">
+            Menu
+        </h1>
+    </div>
+</header>
+<section class="download">
+    <div class="download__sample">
+        <a class="download__sample-link" href="http://localhost:8080/neural-network/download-from-source">
+            Download sample (it will take a few minutes)
+        </a>
+    </div>
+</section>
+<section class="description">
+    <div class="description__text">
+        You should have a directory
+        with sample before you start
+        use next functions.
+    </div>
+</section>
+<section class="menu">
+    <div class="menu__inner">
+        <ul class="menu__list">
+            <li class="menu__list-item">
+                <a class="menu__list-item--link" href="http://localhost:8080/neural-network/demo">
+                    Demo
+                </a>
+            </li>
+            <li class="menu__list-item">
+                <a class="menu__list-item--link" href="http://localhost:8080/neural-network/train-model">
+                    Train model
+                </a>
+            </li>
+            <li class="menu__list-item">
+                <a class="menu__list-item--link" href="http://localhost:8080/neural-network/evaluate-model">
+                    Evaluate model
+                </a>
+            </li>
+            <li class="menu__list-item">
+                <a class="menu__list-item--link" href="http://localhost:8080/neural-network/check-model">
+                    Check model
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
 </body>
 </html>

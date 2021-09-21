@@ -8,10 +8,11 @@
 </head>
 
 <body>
-<p>{{data}}</p>
-<p>{{labels}}</p>
+{{#results}}
+    <p class="check">{{label}} = {{result}}%</p>
+{{/results}}
 <div class="back">
-    <a href="http://localhost:8080/">back</a>
+    <a class="back__link" href="http://localhost:8080/">back</a>
 </div>
 </body>
 </html>
