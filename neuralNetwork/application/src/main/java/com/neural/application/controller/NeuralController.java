@@ -43,7 +43,7 @@ public class NeuralController {
     public ModelAndView demoImage() {
         ModelAndView modelAndView = new ModelAndView("demo");
         Map<String, Object> data = new HashMap<>();
-        data.put("data", neuralService.createDataForDemo());
+        data.put("data", neuralService.demonstrateModel());
         modelAndView.addAllObjects(data);
         return modelAndView;
     }
@@ -79,8 +79,7 @@ public class NeuralController {
     public ModelAndView checkModel() throws ParameterException {
         ModelAndView modelAndView = new ModelAndView("check");
         try {
-            modelAndView.addObject("data", neuralService.checkModel());
-            modelAndView.addObject("labels", neuralService.getCheckLabels());
+            modelAndView.addObject("results", neuralService.checkModel());
         } catch (ParameterException e) {
             throw new ParameterException(e.getMessage());
         }
