@@ -82,11 +82,11 @@ public class NeuralCoreAPI {
         return dataPreparer.createDemoDataSet();
     }
 
-    public String checkTheImage(MultiLayerNetwork model) throws ParameterException {
+    public String checkImage(MultiLayerNetwork model) throws ParameterException {
         return modelInteract.checkImage(model);
     }
 
-    public String getCheckLabels() {
-        return modelInteract.getCheckLabelList();
+    public String getLabelsList() {
+        return modelInteract.getLabelList();
     }
 }
