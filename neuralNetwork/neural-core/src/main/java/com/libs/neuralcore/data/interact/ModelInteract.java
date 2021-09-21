@@ -13,5 +13,5 @@ public interface ModelInteract {
 
     String checkImage(MultiLayerNetwork model) throws ParameterException;
 
-    String getCheckLabelList();
+    String getLabelList();
 }

@@ -68,7 +68,7 @@ public class ModelInteractImpl implements ModelInteract {
             INDArray image = loader.asMatrix(file);
             DataNormalization scale = new ImagePreProcessingScaler(Constants.MIN_RANGE, Constants.MAX_RANGE);
             scale.transform(image);
-            return model.output(image).toString();
+            return model.output(image).toString().replace("[", "").replace("]", "");
         } catch (IOException e) {
             logger.error("Error during image was being checked.");
             throw new ParameterException(e.getMessage());
@@ -76,8 +76,8 @@ public class ModelInteractImpl implements ModelInteract {
     }
 
     @Override
-    public String getCheckLabelList() {
-        return labelList.toString();
+    public String getLabelList() {
+        return labelList.toString().replace("[", "").replace("]", "");
     }
 
     private File imageToCheck(){
