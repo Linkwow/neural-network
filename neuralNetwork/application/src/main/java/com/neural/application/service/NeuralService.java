@@ -52,8 +52,8 @@ public class NeuralService {
 
     public List<CheckModelEntity> checkModel() throws ParameterException {
         List<CheckModelEntity> checkModelEntities = new ArrayList<>();
-        String[] labels = getLabelsList().split(", ");
-        String[] results = getResults().split(", ");
+        String[] labels = getLabelsList().split(",\s* ");
+        String[] results = getResults().split(",\s*");
         for (int i = 0; i < outputNum; i++) {
             CheckModelEntity checkModelEntity = new CheckModelEntity();
             checkModelEntity.setLabel(labels[i]);
