@@ -18,7 +18,7 @@
     <description>Neural Core Service for create, learn and save/load neural network</description>
 
     <properties>
-        <java.version>16</java.version>
+        <java.version>11</java.version>
         <nd4j-native-platform.version>1.0.0-M1.1</nd4j-native-platform.version>
         <deeplearning4j-core.version>1.0.0-M1.1</deeplearning4j-core.version>
     </properties>

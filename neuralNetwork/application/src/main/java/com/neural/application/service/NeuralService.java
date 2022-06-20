@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class NeuralService {
@@ -52,12 +53,12 @@ public class NeuralService {
 
     public List<CheckModelEntity> checkModel() throws ParameterException {
         List<CheckModelEntity> checkModelEntities = new ArrayList<>();
-        String[] labels = getLabelsList().split(",\s* ");
-        String[] results = getResults().split(",\s*");
+        String[] labels = getLabelsList().split(",\\s* ");
+        String[] results = getResults().split(",\\s*");
         for (int i = 0; i < outputNum; i++) {
             CheckModelEntity checkModelEntity = new CheckModelEntity();
             checkModelEntity.setLabel(labels[i]);
-            checkModelEntity.setResult(results[i]);
+            checkModelEntity.setResult(convertToPercents(results[i]));
             checkModelEntities.add(checkModelEntity);
         }
         return checkModelEntities;
@@ -70,5 +71,11 @@ public class NeuralService {
 
     private String getLabelsList() {
         return neuralCoreAPI.getLabelsList();
+    }
+
+    private String convertToPercents(String source) {
+        var percent = Double.parseDouble(source) * 100;
+        var result = String.format(Locale.getDefault(), "%1.2f", percent);
+        return result;
     }
 }
