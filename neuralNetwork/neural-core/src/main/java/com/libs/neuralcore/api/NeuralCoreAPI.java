@@ -75,7 +75,7 @@ public class NeuralCoreAPI {
     }
 
     public List<DemoDataSet> evaluateModel(MultiLayerNetwork model) {
-        return modelBuilder.evaluateModel(dataPreparer.createTestDataSetIterator(), model);
+        return modelBuilder.evaluateModel(dataPreparer.createTrainDataSetIterator(), model);
     }
 
     public List<DemoData> createDataForDemo() {
